@@ -7,7 +7,9 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 import users from './Routes/Users_Router.js';
+import incomes from './Routes/Incomes_Router.js';
 app.use("/", users)
+app.use("/income" , incomes);
 
 
 
