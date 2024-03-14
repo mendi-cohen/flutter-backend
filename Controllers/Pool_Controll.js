@@ -1,20 +1,19 @@
-import Incom_M from '../Models/Actions/Incomes_Model.js';
+import Pool_M from '../Models/Actions/Pool_Model.js';
 
 class incomesControll{
-
-    async AllIncomes(req, res) {
+    async AllPools (req, res){
         try {
-            const incomsFdb = await Incom_M.getIncoms();
-            res.json({ incomsFdb });
+          const PoolFdb  = await Pool_M.getAllPools() 
+          res.json({PoolFdb})
+  
         } catch (error) {
-            console.error(error.message);
-            res.status(500).json({ "error": "Internal Server Error" });
+          console.log(error.message);
         }
-    }
+      }
       
       async saveValue(req, res) {
         try {
-            await Incom_M.sendIncome(req.body);
+            await Pool_M.sendPool(req.body);
             res.json({ "add user": req.body });
         } catch (error) {
             console.error('Error saving user:', error);

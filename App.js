@@ -1,15 +1,20 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import users from './Routes/Users_Router.js';
+import incomes from './Routes/Incomes_Router.js';
+import Pools from './Routes/Pools_Router.js';
+
 const app = express();
 dotenv.config();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-import users from './Routes/Users_Router.js';
-import incomes from './Routes/Incomes_Router.js';
-app.use("/", users)
+
+
+app.use("/", users);
 app.use("/income" , incomes);
+app.use("/pool" , Pools);
 
 
 

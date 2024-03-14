@@ -64,7 +64,6 @@ async loginUser(req, res) {
       }
       // בודקים אם יש משתמש שהסיסמה שווה לסיסמה שהתקבלה בבקשה
       const user = allUsers.find(user => bcrypt.compareSync(password, user.password));
-      console.log(user);
       if (!user) {
           return res.status(401).json({ error: "סיסמה לא חוקית" });
       }
