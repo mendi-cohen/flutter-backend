@@ -22,6 +22,27 @@ class incomesControll{
         }
     }
 
+    async IncomesByUser(req, res) {
+        try {
+            const incomsFdb = await Incom_M.getIncomsByUser_id(req.params.userid);
+            res.json({ incomsFdb });
+        } catch (error) {
+            console.error(error.message);
+            res.status(500).json({ "error": "Internal Server Error" });
+        }
+    }
+
+    async remove(req, res) {
+        try {
+            const incomeId = req.params.incomeId;
+            await Incom_M.remove(incomeId);
+            res.json({ "message": "Charidy removed successfully" });
+        } catch (error) {
+            console.error('Error removing Charidy:', error);
+            res.status(500).json({ "error": "Internal Server Error" });
+        }
+    }
+
 }
 
 export default new incomesControll();

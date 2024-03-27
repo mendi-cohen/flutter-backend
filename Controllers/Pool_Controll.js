@@ -21,6 +21,26 @@ class incomesControll{
         }
     }
 
+    async PoolsByUser(req, res) {
+      try {
+          const PoolFdb = await Pool_M.getPoolByUser_id(req.params.userid);
+          res.json({ PoolFdb });
+      } catch (error) {
+          console.error(error.message);
+          res.status(500).json({ "error": "Internal Server Error" });
+      }
+  }
+  async remove(req, res) {
+    try {
+        const poolsId = req.params.poolsId;
+        await Pool_M.remove(poolsId);
+        res.json({ "message": "Charidy removed successfully" });
+    } catch (error) {
+        console.error('Error removing Charidy:', error);
+        res.status(500).json({ "error": "Internal Server Error" });
+    }
+}
+
 }
 
 export default new incomesControll();

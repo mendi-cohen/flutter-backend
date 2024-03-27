@@ -51,9 +51,9 @@ class UsersControll{
 
 async loginUser(req, res) {
   try {
-      const { password } = req.body;
+      const { password ,email} = req.body;
       // בודקים אם הסיסמה התקבלה
-      if (!password) {
+      if (!password || !email) {
           return res.status(400).json({ error: "Password is required!!!!" });
       }
       // מוצאים את כל המשתמשים מהבסיס נתונים
@@ -63,7 +63,7 @@ async loginUser(req, res) {
           return res.status(404).json({ error: "לא נמצאו משתמשים בבסיס הנתונים עם הסיסמה הנתונה" });
       }
       // בודקים אם יש משתמש שהסיסמה שווה לסיסמה שהתקבלה בבקשה
-      const user = allUsers.find(user => bcrypt.compareSync(password, user.password));
+      const user = allUsers.find(user => user.email === email && bcrypt.compareSync(password, user.password));
       if (!user) {
           return res.status(401).json({ error: "סיסמה לא חוקית" });
       }

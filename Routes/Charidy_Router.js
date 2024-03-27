@@ -1,0 +1,13 @@
+import express from 'express';
+import Charidy from '../Controllers/Charidy_Controll.js';
+const router = express.Router();
+
+router.get("/getcharidy", Charidy.AllCharidys);
+router.post("/sendthecharidy", Charidy.saveValue);
+router.get("/getcharidyByuser_id/:userid", Charidy.CharidysByUser);
+router.get("/getMaaserByuser_id/:userid", Charidy.MaaserByUser);
+router.get("/getOnlyCharidyByuser_id/:userid", Charidy.OnlyCharidysByUser);
+router.delete("/remove/:charidyId", Charidy.remove);
+
+
+export default router 

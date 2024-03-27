@@ -19,6 +19,30 @@ class Incomes {
       return error;
     }
    }
+
+   async getIncomsByUser_id(userid) {
+    try {
+        const result = await Income.findAll(({ where: { user_id: userid } }));
+        return result;
+    } catch (error) {
+        console.error(error);
+        throw new Error('Failed to fetch incomes');
+    }
+}
+
+async remove(IncomeId) {
+  try {
+    const result = await Income.destroy({
+      where: { id: IncomeId }
+    });
+    return result;
+  } catch (error) {
+    console.error(error);
+    throw new Error('Failed to remove Charidy');
+  }
+}
+
+
   }
   
   export default new Incomes();
