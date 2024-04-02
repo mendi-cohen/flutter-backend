@@ -1,7 +1,7 @@
 import Income from '../CreateTable/Incoms_Create.js';
 
 class Incomes {
-     async getIncoms() {
+     async getAllIncoms() {
         try {
             const result = await Income.findAll();
             return result;

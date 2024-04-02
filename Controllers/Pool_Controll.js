@@ -1,6 +1,6 @@
 import Pool_M from '../Models/Actions/Pool_Model.js';
 
-class incomesControll{
+class poolsControll{
     async AllPools (req, res){
         try {
           const PoolFdb  = await Pool_M.getAllPools() 
@@ -43,4 +43,4 @@ class incomesControll{
 
 }
 
-export default new incomesControll();
+export default new poolsControll();

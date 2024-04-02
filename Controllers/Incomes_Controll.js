@@ -4,7 +4,7 @@ class incomesControll{
 
     async AllIncomes(req, res) {
         try {
-            const incomsFdb = await Incom_M.getIncoms();
+            const incomsFdb = await Incom_M.getAllIncoms();
             res.json({ incomsFdb });
         } catch (error) {
             console.error(error.message);
