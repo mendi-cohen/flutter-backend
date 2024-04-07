@@ -15,6 +15,7 @@ import OnEmail from './Controllers/SendEmail_Controll.js';
 
 
 
+
 const app = express();
 dotenv.config();
 app.use(cors());
@@ -30,13 +31,14 @@ app.use("/email" , Email);
 
 
 
+
 // שליחת אמייל סיכום החודש בסוף כל חודש לועזי 
 
 const rule = new schedule.RecurrenceRule();
 rule.month = new schedule.Range(0, 11);
-rule.date = 1; 
-rule.hour = 0; 
-rule.minute = 0;
+rule.date = 7; 
+rule.hour = 15; 
+rule.minute = 50;
 
 const monthlyJob = schedule.scheduleJob(rule, async () => {
     await sendMonthlyEmails();
