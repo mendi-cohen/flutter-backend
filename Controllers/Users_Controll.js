@@ -68,7 +68,7 @@ async loginUser(req, res) {
       }
       // אם הסיסמה נכונה, יוצרים טוקן JWT ומחזירים אותו
       const payload = { userId: user.id, userEmail: user.email };
-      const token = jsonwebtoken.sign(payload, process.env.SECRET_KEY, { expiresIn: '1h' });
+      const token = jsonwebtoken.sign(payload, process.env.SECRET_KEY, { expiresIn: '10m' });
 
       // הוספת פרטי המשתמש לתגובה
       const userDetails = {id:user.id, name: user.userName, email: user.email }; 

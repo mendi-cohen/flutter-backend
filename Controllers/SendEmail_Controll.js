@@ -9,6 +9,7 @@ class Email {
   async sendEmail(req, res) {
     try {
       const users = await Users.getUsers();
+   
 
       for (const user of users) {
         const { id, email } = user;
@@ -38,6 +39,22 @@ class Email {
             total + parseFloat(maaser.dataValues.charidy_value),
           0
         );
+
+        const totalMaaserLeft = IncomeFdb.reduce(
+          (total, income) =>
+            total + (parseFloat(income.dataValues.income_value) * 0.1),
+          0
+        );
+
+        const calculate =totalMaaser - totalMaaserLeft  ;
+        let maaserText = "";
+        if (totalMaaser === totalMaaserLeft) {
+          maaserText = ` הופרשו מעשרות כדין נהדר! `;
+        } else if (totalMaaser > totalMaaserLeft) {
+          maaserText = ` הופרשו מעשרות מעל ומעבר כל הכבוד! `;
+        } else if (totalMaaser < totalMaaserLeft) {
+          maaserText = `נשאר לך עוד מעשרות להפריש החודש בסך : ${calculate.toFixed(2)}`;
+        }
         const total = totalIncome - totalPool - totalCharidy;
 
 
@@ -105,13 +122,16 @@ class Email {
                 text-align: center;
                 margin-top: 20px;
                 font-size: 1.2em;
-                color: green; /* צבע כותרת */
+                color: green; 
               }
               .next-month-message {
                 text-align: center;
                 margin-top: 20px;
                 font-size: 1.2em;
-                color: red; /* צבע כותרת */
+                color: red; 
+              }
+              .CoTitle{
+                font-size: 1.2em;
               }
             </style>
           </head>
@@ -175,7 +195,7 @@ class Email {
                   </thead>
                   <tbody>
                     <tr>
-                      <td colspan="3">צדקה:</td> 
+                      <td colspan="3"><b class ="CoTitle"> צדקה: </b></td> 
                     </tr>
                     ${CharidyFdb.map(
                       (charidy) => `
@@ -186,7 +206,7 @@ class Email {
                     </tr>`
                     ).join("")}
                     <tr>
-                      <td colspan="3">מעשרות:</td> 
+                      <td colspan="3"><b class ="CoTitle"> מעשרות: </b></td> 
                     </tr>
                     ${MaaserFdb.map(
                       (maaser) => `
@@ -205,14 +225,21 @@ class Email {
               <br>
               <strong>סך הכל הוצאות: ${totalPool.toFixed(2)} ש"ח</strong>
               <br>
-              <strong> סכום הצדקה הכולל : ${totalCharidy.toFixed(
+              <strong> סך הצדקה שחולקה : ${totalCharidy.toFixed(
                 2
               )} ש"ח</strong>
               <br>
-              <strong> סכום המעשרות הכולל : ${totalMaaser.toFixed(
+              <strong> סך המעשרות שנתרמו : ${totalMaaser.toFixed(
                 2
               )} ש"ח</strong>
               <br>
+            ${ totalMaaser >=  totalMaaserLeft ?
+               `<strong class="congrats-message"> מצב המעשר : ${maaserText} 🎉 </strong>` :
+                `<strong class="next-month-message"> מצב המעשר : ${maaserText} </strong>`
+            }
+               <br>
+               <br>
+               
               ${
                 total > 0
                   ? `<strong class="congrats-message"> יתרתך היא : ${total.toFixed(
@@ -233,7 +260,7 @@ class Email {
         `;
 
         // שליחת האימייל למשתמש הנוכחי
-        await nodeOutlook.sendEmail({
+        const emailPromise = nodeOutlook.sendEmail({
           auth: {
             user: `${process.env.EMAIL_NAME}`,
             pass: `${process.env.EMAIL_PASS}`,
@@ -244,39 +271,20 @@ class Email {
           html: htmlTemplate,
           text: "This is text version!",
           replyTo: `${process.env.EMAIL_NAME}`,
-
-          onError: (e) => {
-            console.log(e);
-            if (res) {
-              res.status(500).send("Error sending email");
-            }
-          },
-          onSuccess: (i) => {
-            console.log(i);
-            // אם האימייל נשלח בהצלחה - הודעת הצלחה
-            res.status(200).send("Email sent successfully!");
-          },
         });
-        break;
-      }
-    } catch (error) {
-      console.error("Error sending email:", error);
-      // אם יש שגיאה בשליחת האימייל - הודעת שגיאה
-      res.status(500).send("Error sending email");
-    }
     
-  }
-  
+      }
 
-  async sendMonthlyEmails(allUserData) {
 
-    try {
-  
-      console.log("All monthly emails sent successfully!");
+
+   
     } catch (error) {
-      console.error("Error sending monthly emails:", error);
+      console.error("Error sending emails or removing data:", error);
+      res.status(500).send("Error sending emails or removing data");
     }
   }
+
+
 }
 
 export default new Email();

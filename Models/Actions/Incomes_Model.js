@@ -1,4 +1,5 @@
 import Income from '../CreateTable/Incoms_Create.js';
+import { Op } from 'sequelize';
 
 class Incomes {
      async getAllIncoms() {
@@ -22,13 +23,24 @@ class Incomes {
 
    async getIncomsByUser_id(userid) {
     try {
-        const result = await Income.findAll(({ where: { user_id: userid } }));
-        return result;
+      const startOfMonth = new Date(new Date().setDate(1)); 
+      const endOfMonth = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0); 
+
+      const result = await Income.findAll({
+        where: {
+          user_id: userid,
+          createdAt: {
+            [Op.between]: [startOfMonth, endOfMonth]
+          }
+        }
+      });
+
+      return result;
     } catch (error) {
-        console.error(error);
-        throw new Error('Failed to fetch incomes');
+      console.error(error);
+      throw new Error('Failed to fetch incomes');
     }
-}
+  }
 
 async remove(IncomeId) {
   try {
@@ -38,9 +50,11 @@ async remove(IncomeId) {
     return result;
   } catch (error) {
     console.error(error);
-    throw new Error('Failed to remove Charidy');
+    throw new Error('Failed to remove Income');
   }
 }
+
+
 
 
   }

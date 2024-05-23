@@ -1,4 +1,5 @@
 import Pool from '../CreateTable/Pool_Create.js';
+import { Op } from 'sequelize';
 
 class Pools {
   async getAllPools() {
@@ -23,8 +24,19 @@ class Pools {
 
    async getPoolByUser_id(userid) {
     try {
-        const result = await Pool.findAll(({ where: { user_id: userid } }));
-        return result;
+      const startOfMonth = new Date(new Date().setDate(1)); 
+      const endOfMonth = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0); 
+
+      const result = await Pool.findAll({
+        where: {
+          user_id: userid,
+          createdAt: {
+            [Op.between]: [startOfMonth, endOfMonth]
+          }
+        }
+      });
+
+      return result;
     } catch (error) {
         console.error(error);
         throw new Error('Failed to fetch pool');
