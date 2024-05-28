@@ -41,6 +41,26 @@ class poolsControll{
     }
 }
 
+async AllPoolsByUser(req, res) {
+    try {
+        const AllPoolFdb = await Pool_M.getAllPoolByUser_id(req.params.userid);
+        res.json({ AllPoolFdb });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ "error": "Internal Server Error" });
+    }
+}
+
+async AllConstPools(req, res) {
+    try {
+        const AllConstpoolsFdb = await Pool_M.getConstPoolsByUserId(req.params.userid);
+        res.json({ AllConstpoolsFdb });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ "error": "Internal Server Error" });
+    }
+}
+
 }
 
 export default new poolsControll();

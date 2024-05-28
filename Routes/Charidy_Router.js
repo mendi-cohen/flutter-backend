@@ -7,6 +7,7 @@ router.post("/sendthecharidy", Charidy.saveValue);
 router.get("/getcharidyByuser_id/:userid", Charidy.CharidysByUser);
 router.get("/getMaaserByuser_id/:userid", Charidy.MaaserByUser);
 router.get("/getOnlyCharidyByuser_id/:userid", Charidy.OnlyCharidysByUser);
+router.get("/getAllCharidyByuserid/:userid", Charidy.AllCharidysByUser_id);
 router.delete("/remove/:charidyId", Charidy.remove);
 
 

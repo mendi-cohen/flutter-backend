@@ -2,6 +2,7 @@ import Income from '../CreateTable/Incoms_Create.js';
 import { Op } from 'sequelize';
 
 class Incomes {
+  //
      async getAllIncoms() {
         try {
             const result = await Income.findAll();
@@ -21,6 +22,8 @@ class Incomes {
     }
    }
 
+   //
+
    async getIncomsByUser_id(userid) {
     try {
       const startOfMonth = new Date(new Date().setDate(1)); 
@@ -29,9 +32,16 @@ class Incomes {
       const result = await Income.findAll({
         where: {
           user_id: userid,
-          createdAt: {
-            [Op.between]: [startOfMonth, endOfMonth]
-          }
+          [Op.or]: [
+            {
+              createdAt: {
+                [Op.between]: [startOfMonth, endOfMonth]
+              }
+            },
+            {
+              monstli: "קבועה"
+            }
+          ]
         }
       });
 
@@ -41,6 +51,8 @@ class Incomes {
       throw new Error('Failed to fetch incomes');
     }
   }
+
+  //
 
 async remove(IncomeId) {
   try {
@@ -53,6 +65,59 @@ async remove(IncomeId) {
     throw new Error('Failed to remove Income');
   }
 }
+
+
+//
+
+async  getAllIncomesByUserId(userid) {
+  try {
+    const now = new Date();
+    const startOfYear = new Date(now.getFullYear(), 0, 1);
+    const lastDayOfPreviousMonth = new Date(now.getFullYear(), now.getMonth(), 0); 
+
+    const result = await Income.findAll({
+      where: {
+        user_id: userid,
+        createdAt: {
+          [Op.between]: [startOfYear, lastDayOfPreviousMonth]
+        }
+      }
+    });
+
+    return result;
+  } catch (error) {
+    console.error(error);
+    throw new Error('Failed to fetch incomes');
+  }
+}
+
+
+// 
+
+async  getConstIncomesByUserId(userid) {
+  try {
+    const result = await Income.findAll({
+      where: {
+        user_id: userid,
+        monstli: "קבועה"
+      }
+    });
+    return result;
+  } catch (error) {
+    console.error(error);
+    throw new Error('Failed to fetch incomes');
+  }
+}
+
+
+
+
+
+
+
+
+
+
 
 
 

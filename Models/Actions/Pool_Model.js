@@ -30,9 +30,16 @@ class Pools {
       const result = await Pool.findAll({
         where: {
           user_id: userid,
-          createdAt: {
-            [Op.between]: [startOfMonth, endOfMonth]
-          }
+          [Op.or]: [
+            {
+              createdAt: {
+                [Op.between]: [startOfMonth, endOfMonth]
+              }
+            },
+            {
+              monstli: "קבועה"
+            }
+          ]
         }
       });
 
@@ -54,6 +61,45 @@ async remove(poolId) {
     throw new Error('Failed to remove pool');
   }
 }
+
+async getAllPoolByUser_id(userid) {
+  try {
+    const now = new Date();
+    const startOfYear = new Date(now.getFullYear(), 0, 1);
+    const lastDayOfPreviousMonth = new Date(now.getFullYear(), now.getMonth(), 0); 
+
+    const result = await Pool.findAll({
+      where: {
+        user_id: userid,
+        createdAt: {
+          [Op.between]: [startOfYear, lastDayOfPreviousMonth]
+        }
+      }
+    });
+
+    return result;
+  } catch (error) {
+      console.error(error);
+      throw new Error('Failed to fetch pool');
+  }
+}
+
+
+async  getConstPoolsByUserId(userid) {
+  try {
+    const result = await Pool.findAll({
+      where: {
+        user_id: userid,
+        monstli: "קבועה"
+      }
+    });
+    return result;
+  } catch (error) {
+    console.error(error);
+    throw new Error('Failed to fetch pools');
+  }
+}
+
 
   }
   

@@ -43,6 +43,29 @@ class incomesControll{
         }
     }
 
+
+
+    async AllIncomesByUser(req, res) {
+        try {
+            const AllincomsFdb = await Incom_M.getAllIncomesByUserId(req.params.userid);
+            res.json({ AllincomsFdb });
+        } catch (error) {
+            console.error(error.message);
+            res.status(500).json({ "error": "Internal Server Error" });
+        }
+    }
+
+
+    async AllConstIncomes(req, res) {
+        try {
+            const AllConstincomsFdb = await Incom_M.getConstIncomesByUserId(req.params.userid);
+            res.json({ AllConstincomsFdb });
+        } catch (error) {
+            console.error(error.message);
+            res.status(500).json({ "error": "Internal Server Error" });
+        }
+    }
+
 }
 
 export default new incomesControll();
