@@ -36,10 +36,9 @@ app.use("/email" , Email);
 
 const rule = new schedule.RecurrenceRule();
 rule.month = new schedule.Range(0, 11);
-rule.date = 22; 
-rule.hour = 18; 
-rule.minute = 21
-;
+rule.date = 29; 
+rule.hour = 17; 
+rule.minute = 14;
 
 const monthlyJob = schedule.scheduleJob(rule, async () => {
     await sendMonthlyEmails();

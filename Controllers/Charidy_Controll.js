@@ -73,6 +73,20 @@ async AllCharidysByUser_id(req, res) {
     }
 }
 
+
+
+
+
+async AllConstCharidysByUser_id(req, res) {
+    try {
+        const AllConstCharidy = await Charidy_M.getConstCharidyByUserId(req.params.userid);
+        res.json({ AllConstCharidy });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ "error": "Internal Server Error" });
+    }
+}
+
 }
 
 export default new charidysControll();

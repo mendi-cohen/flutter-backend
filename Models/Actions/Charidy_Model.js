@@ -148,6 +148,41 @@ async getAllCharidysByUser_id(userid) {
 
 
 
+async  getConstCharidyByUserId(userid) {
+  try {
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth() + 1; 
+    const currentYear = currentDate.getFullYear();
+    const currentDateString = `${currentYear}-${currentMonth < 10 ? '0' : ''}${currentMonth}`;
+
+    const result = await Charidy.findAll({
+      where: {
+        user_id: userid,
+        [Op.or]: [
+          { 
+            type: "חודשי קבוע" 
+          },
+          {
+            type: {
+              [Op.notLike]: '__/__',
+            }
+          },
+          {
+            type: { [Op.lt]: currentDateString } 
+          }
+        ]
+      }
+    });
+    return result;
+  } catch (error) {
+    console.error(error);
+    throw new Error('Failed to fetch charidy');
+  }
+}
+
+
+
+
   }
   
   export default new Charidys();
