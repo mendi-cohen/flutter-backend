@@ -8,14 +8,14 @@ class Charidys {
         return result;
     } catch (error) {
         console.error(error);
-        throw new Error('Failed to fetch pools');
+        throw new Error('Failed to fetch sendCharidys');
     }
 }
 
    async sendCharidys(value) {
     try {
-      const pool = await Charidy.create(value);
-      return pool;
+      const sendCharidy = await Charidy.create(value);
+      return sendCharidy;
     } catch (error) {
       console.error(error.stack);
       return error;

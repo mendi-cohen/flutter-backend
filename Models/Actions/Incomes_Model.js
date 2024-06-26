@@ -12,6 +12,7 @@ class Incomes {
             throw new Error('Failed to fetch incomes');
         }
     }
+    
    async sendIncome(value) {
     try {
       const income = await Income.create(value);
