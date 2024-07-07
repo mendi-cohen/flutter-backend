@@ -22,48 +22,38 @@ class Charidys {
     }
    }
 
-   async getCharidysByUser_id(userid) {
+   async getMontsliCharidyByUser_id(userid) {
     try {
-      const startOfMonth = new Date(new Date().setDate(1));
-      const endOfMonth = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0);
       const today = new Date();
+      const currentMonthYear = `${String(today.getMonth() + 1).padStart(2, '0')}/${today.getFullYear()}`;
   
       const result = await Charidy.findAll({
         where: {
           user_id: userid,
           [Op.or]: [
-            {
-              createdAt: {
-                [Op.between]: [startOfMonth, endOfMonth]
-              }
-            },
-            {
-              type: "חודשי קבוע"
-            },
+            Sequelize.where(
+              Sequelize.fn('DATE_FORMAT', Sequelize.col('createdAt'), '%m/%Y'),
+              currentMonthYear
+            ),
+            { type: "חודשי קבוע" },
             {
               [Op.and]: [
-                {
-                  type: {
-                    [Op.notIn]: ["חודשי קבוע", "חד פעמי"]
-                  }
-                },
+                { type: { [Op.regexp]: '^[0-9]{2}/[0-9]{4}$' } },
                 Sequelize.where(
-                  Sequelize.fn('STR_TO_DATE', Sequelize.col('type'), '%m/%Y'),
-                  {
-                    [Op.gte]: today
-                  }
+                  Sequelize.col('type'),
+                  { [Op.gte]: currentMonthYear }
                 )
               ]
             }
           ]
         }
       });
-  
-      console.log(result);
+      
+      console.log('Query result:', result);
       return result;
     } catch (error) {
-      console.error(error);
-      throw new Error('Failed to fetch Charidys');
+      console.error('Error fetching records:', error);
+      throw new Error('Failed to fetch records');
     }
   }
   

@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.get("/getcharidy", Charidy.AllCharidys);
 router.post("/sendthecharidy", Charidy.saveValue);
-router.get("/getcharidyByuser_id/:userid", Charidy.CharidysByUser);
+router.get("/getcharidyByuser_id/:userid", Charidy.MontsliCharidyByUser_id);
 router.get("/getMaaserByuser_id/:userid", Charidy.MaaserByUser);
 router.get("/getOnlyCharidyByuser_id/:userid", Charidy.OnlyCharidysByUser);
 router.get("/getAllCharidyByuserid/:userid", Charidy.AllCharidysByUser_id);

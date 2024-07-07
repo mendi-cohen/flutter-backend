@@ -21,9 +21,9 @@ class charidysControll{
         }
     }
 
-    async CharidysByUser(req, res) {
+    async MontsliCharidyByUser_id(req, res) {
       try {
-          const CharidyFdb = await Charidy_M.getCharidysByUser_id(req.params.userid);
+          const CharidyFdb = await Charidy_M.getMontsliCharidyByUser_id(req.params.userid);
           res.json({ CharidyFdb });
       } catch (error) {
           console.error(error.message);
